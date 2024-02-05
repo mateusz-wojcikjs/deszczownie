@@ -1,0 +1,25 @@
+export const theme = {
+  colors: {
+    primary: '#256D1B',
+    primaryDarken: '#23601A',
+    secondary: '#253745',
+    secondaryDarken: '#192631',
+    secondaryLight: '#526C80',
+    white: '#FFFFFF',
+    grey: '#C4C4C4',
+    greySecondary: '#F6F7F8',
+    greyFont: '#828282',
+    greyFontDark: '#424B54',
+    lightGrey: '#F4F4F4',
+    black: '#000000',
+  },
+  fontSize: {
+    h2: '4rem',
+    xxl: '3.6rem',
+    xl: '2.1rem',
+    l: '1.8rem',
+    m: '1.6rem',
+    s: '1.3rem',
+    xs: '1.1rem',
+  },
+}
