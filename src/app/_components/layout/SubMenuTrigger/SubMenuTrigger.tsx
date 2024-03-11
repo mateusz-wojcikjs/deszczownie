@@ -26,7 +26,7 @@ const SubMenuTrigger: FC<PropsWithChildren> = ({ children }) => {
 
   const onClick = () => {
     // e.preventDefault();
-    setIsActive(!isActive)
+    // setIsActive(!isActive)
   }
 
   // const items = data.allContentfulProdukt.nodes;
@@ -82,7 +82,7 @@ const SubMenuTrigger: FC<PropsWithChildren> = ({ children }) => {
   // };
 
   return (
-    <details open={isActive} onClick={e => onClick()}>
+    <details onClick={e => onClick()}>
       <summary ref={dropdownRef}>{children}</summary>
       <ul className="submenu">
         <li>Test 1</li>

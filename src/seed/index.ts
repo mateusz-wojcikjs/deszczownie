@@ -1,6 +1,13 @@
+import path from 'path'
 import type { Payload } from 'payload'
 
+import type { Category, Media } from '../payload-types'
+import * as Categories from './collections/categories'
+import * as Pages from './collections/pages'
+import { basicImg, slider } from './media'
+
 export const seed = async (payload: Payload): Promise<void> => {
+  payload.logger.info('Seeding data...')
   // create admin
   await payload.create({
     collection: 'users',
@@ -10,84 +17,43 @@ export const seed = async (payload: Payload): Promise<void> => {
     },
   })
 
-  // create home page
-  await Promise.all([
+  payload.logger.info(`— Seeding media...`)
+
+  const [sliderImgDoc, basicImgDoc]: Media[] = await Promise.all([
     await payload.create({
-      collection: 'pages',
-      data: {
-        title: 'Home',
-        richText: [
-          {
-            children: [
-              {
-                text: 'Payload Custom Server Example XD',
-              },
-            ],
-            type: 'h1',
-          },
-          {
-            children: [
-              {
-                text: 'This is an example of how to host ',
-              },
-              {
-                type: 'link',
-                linkType: 'custom',
-                url: 'https://payloadcms.com',
-                children: [
-                  {
-                    text: 'Payload',
-                  },
-                ],
-                newTab: true,
-              },
-              {
-                text: ' alongside your front-end by sharing a single Express server. You are currently browsing a ',
-              },
-              {
-                type: 'link',
-                linkType: 'custom',
-                url: 'https://nextjs.org',
-                children: [
-                  {
-                    text: 'Next.js',
-                  },
-                ],
-                newTab: true,
-              },
-              {
-                text: ' app, but you can easily swap in any framework you like—check out the ',
-              },
-              {
-                type: 'link',
-                linkType: 'custom',
-                url: 'http://github.com/payloadcms/payload/tree/main/examples/custom-server',
-                children: [
-                  {
-                    text: 'README.md',
-                  },
-                ],
-              },
-              {
-                text: ' for instructions on how to do this. ',
-              },
-              {
-                type: 'link',
-                linkType: 'custom',
-                url: 'http://localhost:3000/admin',
-                children: [
-                  {
-                    text: 'Click here',
-                  },
-                ],
-              },
-              {
-                text: ' to navigate to the admin panel and login.',
-              },
-            ],
-          },
-        ],
-      },
+      collection: 'media',
+      data: slider,
+      filePath: path.resolve(__dirname, 'slider.jpg'),
+    }),
+    await payload.create({
+      collection: 'media',
+      data: basicImg,
+      filePath: path.resolve(__dirname, 'about-bg-2.jpg'),
     }),
   ])
+
+  payload.logger.info(`— Seeding categories...`)
+
+  const [category2Doc]: Category[] = await Promise.all([
+    await payload.create({
+      collection: 'categories',
+      data: Categories.category1,
+    }),
+    await payload.create({
+      collection: 'categories',
+      data: Categories.category2,
+    }),
+  ])
+
+  payload.logger.info(`— Seeding home page...`)
+
+  await payload.create({
+    collection: 'pages',
+    data: JSON.parse(
+      JSON.stringify({ ...Pages.homePage, categories: [] })
+        .replace(/\{\{HERO_BG\}\}/g, String(sliderImgDoc.id))
+        .replace(/\{\{IMAGE_1\}\}/g, String(basicImgDoc.id))
+        .replace(/\{\{PROJECTS_PAGE_ID\}\}/g, String(category2Doc.id)),
+    ),
+  })
 }

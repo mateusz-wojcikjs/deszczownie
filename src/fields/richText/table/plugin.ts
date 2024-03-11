@@ -15,7 +15,9 @@ const withTable: RichTextPlugin = incomingEditor => {
     const { selection } = editor
 
     if (selection && Range.isCollapsed(selection)) {
+      // @ts-ignore
       const [cell] = Editor.nodes(editor, {
+        // @ts-ignore
         match: n => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'table-cell',
       })
 
@@ -36,7 +38,9 @@ const withTable: RichTextPlugin = incomingEditor => {
     const { selection } = editor
 
     if (selection && Range.isCollapsed(selection)) {
+      // @ts-ignore
       const [cell] = Editor.nodes(editor, {
+        // @ts-ignore
         match: n => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'table-cell',
       })
 
@@ -57,7 +61,9 @@ const withTable: RichTextPlugin = incomingEditor => {
     const { selection } = editor
 
     if (selection) {
+      // @ts-ignore
       const [table] = Editor.nodes(editor, {
+        // @ts-ignore
         match: n => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'table',
       })
 
